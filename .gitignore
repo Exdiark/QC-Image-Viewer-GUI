@@ -1,0 +1,13 @@
+*.hint
+*.sln
+*.vcxproj
+*.filters
+*.user
+*.idb
+*.pdb
+*.obj
+*.log
+*.tlog
+*.lastbuildstate
+x64/*
+.vs/*
