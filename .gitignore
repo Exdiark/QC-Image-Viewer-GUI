@@ -9,5 +9,6 @@
 *.log
 *.tlog
 *.lastbuildstate
+*.props
 x64/*
 .vs/*
