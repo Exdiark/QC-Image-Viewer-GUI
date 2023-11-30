@@ -4,10 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <../MyFrame.h>
-#include <../MyApp.h>
-#include <../MainImagePanel.h>
-#include <../lodepng.h>
+#include <../include/Header.h>
 
 wxBEGIN_EVENT_TABLE(MyApp,wxApp)
     EVT_BUTTON(10001, OnButtonClicked)

@@ -8,6 +8,8 @@
 *.obj
 *.log
 *.tlog
+*.cproject
+*.project
 *.lastbuildstate
 *.props
 x64/*

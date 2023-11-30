@@ -1,7 +1,7 @@
 #pragma once
 #include <wx/app.h>
-#include <../MyFrame.h>
-#include <../MainImagePanel.h>
+#include <MyFrame.h>
+#include <MainImagePanel.h>
 
 class MyApp : public wxApp
 {

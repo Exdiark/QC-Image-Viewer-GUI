@@ -1,7 +1,6 @@
 #include <wx/colordlg.h>
 
-#include <../MainImagePanel.h>
-#include <../lodepng.h>
+#include <../include/Header.h>
 
 BEGIN_EVENT_TABLE(wxImagePanel, wxPanel)
 
