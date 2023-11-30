@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <../include/Header.h>
+#include "../include/Header.h"
 
 wxBEGIN_EVENT_TABLE(MyApp,wxApp)
     EVT_BUTTON(10001, OnButtonClicked)

@@ -5,6 +5,6 @@
 	#include <wx/wx.h>
 #endif
 
-#include <../include/Header.h>
+#include "../include/Header.h"
 	
 wxIMPLEMENT_APP(MyApp);

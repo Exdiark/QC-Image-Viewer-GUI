@@ -1,6 +1,6 @@
 #include <wx/frame.h>
 
-#include <../include/Header.h>
+#include "../include/Header.h"
 
 MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "help")
 {
