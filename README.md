@@ -1,9 +1,9 @@
 
-Image Viewer GUI for Windows 32/64 bit systems===============
+# Image Viewer GUI for Windows 32/64 bit systems
 
 _________________
 
-< -- Setup for Visual Studio -- >
+## < -- Setup for Visual Studio -- >
 
 1. Download [wxWidgets v 3.2.4](https://www.wxwidgets.org/downloads/"wxWidgetsv3.2.4")
 2. Extract files to some directory (save path)
