@@ -6,16 +6,22 @@ class wxImagePanel : public wxPanel
 {
     wxImage* image;
     wxBitmap resized;
-    int w, h;
+    int image_width, image_height, object_width, object_height;
+    bool isMouseDown;
 
 public:
-    wxImagePanel(wxFrame* parent, wxString file, wxBitmapType format);
+    wxImagePanel(wxPanel* parent, wxString file, int width, int height);
 
     void paintEvent(wxPaintEvent& evt);
     void paintNow();
     void loadNewFile(wxString file);
-    void OnSize(wxSizeEvent& event);
     void render(wxDC& dc);
+    wxSize getImageSize();
+
+private:
+    void processImage(std::string fileName);
+    void mouseDown(wxMouseEvent& event);
+    void mouseReleased(wxMouseEvent& event);
 
     // some useful events
     /*

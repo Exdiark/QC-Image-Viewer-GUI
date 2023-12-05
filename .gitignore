@@ -12,5 +12,6 @@
 *.project
 *.lastbuildstate
 *.props
+Release/*
 x64/*
 .vs/*

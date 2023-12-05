@@ -7,11 +7,12 @@ class MyApp : public wxApp
 {
 public:
 	wxImagePanel* drawPane;
-	wxString current_file;
+	wxTextCtrl* console;
 	virtual bool OnInit();
 	wxFrame* frame;
 	void InitWindows(wxString fileName);
 	void OnButtonClicked(wxCommandEvent& evt);
+	void log(std::string message);
 
 	wxDECLARE_EVENT_TABLE();
 };

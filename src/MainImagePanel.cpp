@@ -20,44 +20,15 @@ END_EVENT_TABLE()
  void wxImagePanel::keyReleased(wxKeyEvent& event) {}
  */
 
-    wxImagePanel::wxImagePanel(wxFrame* parent, wxString file, wxBitmapType format) :
-    wxPanel(parent)
+
+wxImagePanel::wxImagePanel(wxPanel* parent, wxString file, int width, int height) : wxPanel(parent, wxID_ANY, wxPoint(0, 0), wxSize(width, height))
 {
-    // load the file... ideally add a check to see if loading was successful
-    std::vector<unsigned char> limage;
-
-    unsigned width, height;
-    unsigned error = lodepng::decode(limage, width, height, std::string(file));
-
-    //the pixels are now in the vector "image", 4 bytes per pixel, ordered RGBARGBA..., use it as texture, draw it, ...
-
-    w = width;
-    h = height;
-
-    unsigned char* image2D = (unsigned char*)malloc(width * height * 3);
-    unsigned char* ptr = image2D;
-
-    for (int i = 0; i < (width * height); i++) {
-
-        //wxString Foobar;
-        //Foobar.Printf(wxT("r is %d g is %d b is %d"), limage[4 * i], limage[4 * i+1], limage[4 * i+2]);
-        //wxMessageBox(Foobar);
-
-        *ptr = (limage[4*i]);
-        ptr++;
-        *ptr = (limage[4*i+1]);
-        ptr++;
-        *ptr = (limage[4*i+2]);
-        ptr++;
-
-    }
-
-    image = new wxImage(width, height, image2D);
-
-    wxString Foobar;
-    Foobar.Printf(wxT("W is %d H is %d"), width, height);
-    wxMessageBox(Foobar);
+    object_width = width;
+    object_height = height;
+    isMouseDown = false;
+    loadNewFile(file);
 }
+
 /*
  * Called by the system of by wxWidgets when the panel needs
  * to be redrawn. You can also trigger this call by
@@ -88,42 +59,9 @@ void wxImagePanel::paintNow()
 
 void wxImagePanel::loadNewFile(wxString file)
 {
-    std::vector<unsigned char> limage;
-
-    unsigned width, height;
-    unsigned error = lodepng::decode(limage, width, height, std::string(file));
-
-    //the pixels are now in the vector "image", 4 bytes per pixel, ordered RGBARGBA..., use it as texture, draw it, ...
-
-    int w = width;
-    int h = height;
-
-    unsigned char* image2D = (unsigned char*)malloc(width * height * 3);
-    unsigned char* ptr = image2D;
-
-    for (int i = 0; i < (width * height); i++) {
-
-        //wxString Foobar;
-        //Foobar.Printf(wxT("r is %d g is %d b is %d"), limage[4 * i], limage[4 * i+1], limage[4 * i+2]);
-        //wxMessageBox(Foobar);
-
-        *ptr = (limage[4 * i]);
-        ptr++;
-        *ptr = (limage[4 * i + 1]);
-        ptr++;
-        *ptr = (limage[4 * i + 2]);
-        ptr++;
-
-    }
-
-    image = new wxImage(width, height, image2D);
-
-    wxString Foobar;
-    Foobar.Printf(wxT("W is %d H is %d"), width, height);
-    wxMessageBox(Foobar);
-
-    w = -1;
-    h = -1;
+    processImage(std::string(file));
+    Update();
+    Refresh();
 }
 
 /*
@@ -136,14 +74,60 @@ void wxImagePanel::render(wxDC& dc)
     int neww, newh;
     dc.GetSize(&neww, &newh);
 
-    if (neww != w || newh != h)
+    if (neww != image_width || newh != image_height)
     {
         resized = wxBitmap(image->Scale(neww, newh /*, wxIMAGE_QUALITY_HIGH*/));
-        w = neww;
-        h = newh;
         dc.DrawBitmap(resized, 0, 0, false);
     }
     else {
         dc.DrawBitmap(resized, 0, 0, false);
     }
+}
+
+wxSize wxImagePanel::getImageSize() 
+{
+    return wxSize(image_width, image_height);
+}
+
+void wxImagePanel::processImage(std::string fileName)
+{
+    std::vector<unsigned char> decoded_image;
+
+    unsigned width, height;
+    unsigned error = lodepng::decode(decoded_image, width, height, fileName);
+
+    //the pixels are now in the vector "image", 4 bytes per pixel, ordered RGBARGBA..., use it as texture, draw it, ...
+
+    image_width = width;
+    image_height = height;
+
+    unsigned char* image2D = (unsigned char*)malloc(width * height * 3);
+    unsigned char* ptr = image2D;
+
+    for (int i = 0; i < (width * height); i++) {
+
+        //wxString Foobar;
+        //Foobar.Printf(wxT("r is %d g is %d b is %d"), limage[4 * i], limage[4 * i+1], limage[4 * i+2]);
+        //wxMessageBox(Foobar);
+
+        *ptr = (decoded_image[4 * i]);
+        ptr++;
+        *ptr = (decoded_image[4 * i + 1]);
+        ptr++;
+        *ptr = (decoded_image[4 * i + 2]);
+        ptr++;
+
+    }
+
+    image = new wxImage(width, height, image2D);
+}
+
+void wxImagePanel::mouseDown(wxMouseEvent& event)
+{
+    isMouseDown = true;
+}
+
+void wxImagePanel::mouseReleased(wxMouseEvent& event)
+{
+    isMouseDown = false;
 }
