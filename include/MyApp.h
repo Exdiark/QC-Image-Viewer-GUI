@@ -2,10 +2,12 @@
 #include <wx/app.h>
 #include "MyFrame.h"
 #include "MainImagePanel.h"
+#include "DisplaySelector.h"
 
 class MyApp : public wxApp
 {
 public:
+	Display_Selector* disp;
 	wxImagePanel* drawPane;
 	wxTextCtrl* console;
 	virtual bool OnInit();

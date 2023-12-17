@@ -5,6 +5,7 @@
 BEGIN_EVENT_TABLE(wxImagePanel, wxPanel)
 
 EVT_PAINT(wxImagePanel::paintEvent)
+EVT_LEFT_DOWN(wxImagePanel::OnLeftDown)
 
 END_EVENT_TABLE()
 
@@ -42,6 +43,11 @@ void wxImagePanel::paintEvent(wxPaintEvent& evt)
     render(dc);
 }
 
+void wxImagePanel::OnLeftDown(wxMouseEvent& evt)
+{
+    
+}
+
 /*
  * Alternatively, you can use a clientDC to paint on the panel
  * at any time. Using this generally does not free you from
@@ -57,9 +63,12 @@ void wxImagePanel::paintNow()
     render(dc);
 }
 
+
+
 void wxImagePanel::loadNewFile(wxString file)
 {
     processImage(std::string(file));
+    changeDisplay(0, 0, image_width, image_height);
     Update();
     Refresh();
 }
@@ -76,7 +85,7 @@ void wxImagePanel::render(wxDC& dc)
 
     if (neww != image_width || newh != image_height)
     {
-        resized = wxBitmap(image->Scale(neww, newh /*, wxIMAGE_QUALITY_HIGH*/));
+        resized = wxBitmap(display->Scale(neww, newh /*, wxIMAGE_QUALITY_HIGH*/));
         dc.DrawBitmap(resized, 0, 0, false);
     }
     else {
@@ -87,6 +96,50 @@ void wxImagePanel::render(wxDC& dc)
 wxSize wxImagePanel::getImageSize() 
 {
     return wxSize(image_width, image_height);
+}
+
+void wxImagePanel::changeDisplay(int x, int y, int w, int h) 
+{
+    unsigned char* subImage;
+    if ((subImage = getSubImage(x, y, w, h)) == NULL) {
+        return;
+    }
+
+    display = new wxImage(w, h, getSubImage(x, y, w, h));
+    display_width = w;
+    display_height = h;
+    
+    Update();
+    Refresh();
+}
+
+unsigned char* wxImagePanel::getSubImage(int x, int y, int w, int h) 
+{
+    if (x < 0 || y < 0 || w < 0 || h < 0) {
+        return NULL;
+    } else if (x + w > image_width || y + h > image_height) {
+        return NULL;
+    }
+
+    unsigned char* disp = (unsigned char*)malloc(3 * w * h);
+    unsigned char* ptr = disp;
+    
+    for (int i = 0; i < h; i++) 
+    {
+
+        for (int j = 0; j < w; j++) 
+        {
+            *ptr = image->GetRed(x+j,y+i);
+            ptr++;
+            *ptr = image->GetGreen(x + j, y + i);
+            ptr++;
+            *ptr = image->GetBlue(x + j, y + i);
+            ptr++;
+        }
+        
+    }
+
+    return disp;
 }
 
 void wxImagePanel::processImage(std::string fileName)
@@ -110,24 +163,15 @@ void wxImagePanel::processImage(std::string fileName)
         //Foobar.Printf(wxT("r is %d g is %d b is %d"), limage[4 * i], limage[4 * i+1], limage[4 * i+2]);
         //wxMessageBox(Foobar);
 
-        *ptr = (decoded_image[4 * i]);
+        //load data into array format RGBRGBRGB... can extract alpha from decoded_image[4*i+3]
+        *ptr = (decoded_image[4*i]);
         ptr++;
-        *ptr = (decoded_image[4 * i + 1]);
+        *ptr = (decoded_image[4*i +1]);
         ptr++;
-        *ptr = (decoded_image[4 * i + 2]);
+        *ptr = (decoded_image[4*i +2]);
         ptr++;
 
     }
 
     image = new wxImage(width, height, image2D);
-}
-
-void wxImagePanel::mouseDown(wxMouseEvent& event)
-{
-    isMouseDown = true;
-}
-
-void wxImagePanel::mouseReleased(wxMouseEvent& event)
-{
-    isMouseDown = false;
 }
