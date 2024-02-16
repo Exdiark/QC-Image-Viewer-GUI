@@ -14,6 +14,7 @@ public:
 	wxFrame* frame;
 	void InitWindows(wxString fileName);
 	void OnButtonClicked(wxCommandEvent& evt);
+	void OnMouseClick(wxMouseEvent& evt);
 	void log(std::string message);
 
 	wxDECLARE_EVENT_TABLE();

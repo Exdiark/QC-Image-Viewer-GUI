@@ -7,9 +7,12 @@
 #include "../include/Header.h"
 using namespace std;
 
-wxBEGIN_EVENT_TABLE(MyApp,wxApp)
+wxBEGIN_EVENT_TABLE(MyApp, wxApp)
     EVT_BUTTON(1, OnButtonClicked)
     EVT_BUTTON(2, OnButtonClicked)
+    EVT_BUTTON(3, OnButtonClicked)
+    EVT_BUTTON(4, OnButtonClicked)
+    //EVT_LEFT_UP(OnMouseClick)
 wxEND_EVENT_TABLE()
 
 bool MyApp::OnInit()
@@ -21,19 +24,6 @@ bool MyApp::OnInit()
 }
 
 void MyApp::InitWindows(wxString fileName) {
-    
-    /*
-    * layout:
-    *   sizer (sizer) for a panel (panel) that encompasses entire frame
-    *       Parent: frame
-    *       Children: leftpanel,rightpanel
-    *   sizer (left_sizer), contains leftpanel
-    *       Parent: sizer
-    *       Children: img_btn
-    *   sizer (right_sizer), contains rightpanel
-    *       Parent: sizer
-    *       Children: drawPane, consoleHeader, console
-    */
 
     frame = new wxFrame(NULL, wxID_ANY, wxT("hot dog"), wxPoint(50, 200), wxSize(1000, 800));
     frame->SetBackgroundColour(wxColour(*wxWHITE));
@@ -51,6 +41,8 @@ void MyApp::InitWindows(wxString fileName) {
     rightpanel->SetBackgroundColour(wxColour(*wxLIGHT_GREY));
     rightpanel->SetSizer(right_sizer);
 
+
+
     console = new wxTextCtrl(rightpanel, wxID_ANY, "", wxPoint(500, 70), wxSize(850 , 200),wxTE_READONLY | wxTE_MULTILINE);
     drawPane = new wxImagePanel(rightpanel, "Image", 0, 0);
     wxTextCtrl* consoleHeader = new wxTextCtrl(rightpanel, wxID_ANY, "Event Log", wxPoint(500, 70), wxSize(850, 25), wxTE_READONLY);
@@ -60,19 +52,24 @@ void MyApp::InitWindows(wxString fileName) {
     right_sizer->Add(console,0,wxCENTER);
 
 
+
     main_sizer->Add(leftpanel);
     main_sizer->AddSpacer(10);
     main_sizer->Add(rightpanel,1,wxEXPAND);
 
     
-    left_sizer->AddSpacer(10);
-
     wxButton* img_btn = new wxButton(leftpanel, 1, "Load Image", wxPoint(0, 0), wxSize(100, 25));
-    left_sizer->Add(img_btn,0,wxCenter);
+    disp = new Display_Selector(left_sizer, leftpanel, NULL);
+    wxButton* next_page = new wxButton(leftpanel, 3, "Next Page", wxPoint(0, 0), wxSize(100, 25));
+    wxButton* last_page = new wxButton(leftpanel, 4, "Last Page", wxPoint(0, 0), wxSize(100, 25));
 
     left_sizer->AddSpacer(10);
-
-    disp = new Display_Selector(left_sizer, leftpanel, NULL);
+    left_sizer->Add(img_btn,0,wxCenter);
+    left_sizer->AddSpacer(10);
+    disp->addSizer();
+    left_sizer->AddSpacer(10);
+    left_sizer->Add(next_page, 0, wxCenter);
+    left_sizer->Add(last_page, 0, wxCenter);
 
     log("Program successfully initialized");
 
@@ -126,7 +123,28 @@ void MyApp::OnButtonClicked(wxCommandEvent& evt)
         
     }
 
+    else if (id == 3)
+    {
+        log("Attempting to display next subImage...");
+        drawPane->nextPage();
+    }
+
+    else if (id == 4)
+    {
+        log("Attempting to display last subImage...");
+        drawPane->lastPage();
+    }
 }
+
+/*
+void MyApp::OnMouseClick(wxMouseEvent& evt)
+{
+    if evt
+    //wxString Foobar;
+    //Foobar.Printf(wxT("button click xd"));
+    //wxMessageBox(Foobar);
+}
+*/
 
 void MyApp::log(std::string message) {
     *console << message << "\r\n";

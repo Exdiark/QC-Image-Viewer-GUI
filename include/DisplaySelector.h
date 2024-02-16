@@ -10,7 +10,10 @@ public:
     int getW();
     int getX();
     int getY();
+    void addSizer();
 
+    wxSizer* parentSizer;
+    wxButton* button;
     Console* console;
     wxTextCtrl* x, * y, * w, * h;
 };
