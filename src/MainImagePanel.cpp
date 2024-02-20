@@ -279,6 +279,7 @@ unsigned char* wxImagePanel::getPixel(int x, int y) {
     return pixel;
 }
 
+/*
 unsigned char* wxImagePanel::getColumnData(int x) {
 
     unsigned char* colptr = (unsigned char*)malloc(sizeof(unsigned char*) * image_height*4);
@@ -289,3 +290,4 @@ unsigned char* wxImagePanel::getColumnData(int x) {
         ptr += 4;
     }
 }
+*/

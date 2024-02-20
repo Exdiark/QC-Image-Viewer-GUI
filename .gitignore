@@ -7,6 +7,14 @@
 *.project
 *.lastbuildstate
 *.props
+*.lib
+*.dll
 Release/*
 x64/*
 .vs/*
+bin/
+build/
+wxwidgets/
+CMakefiles/
+
+CMakeCache.txt
