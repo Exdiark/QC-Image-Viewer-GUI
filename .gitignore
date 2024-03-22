@@ -9,11 +9,21 @@
 *.props
 *.lib
 *.dll
+*.vcxproj
+*.filters
+*.cmake
 Release/*
 x64/*
 .vs/*
+
+
+
 bin/
+lib/vc14x_x64_dll/
+lib/vc_x64_dll/
+libs/
 build/
+include/wx/
 wxwidgets/
 CMakefiles/
 

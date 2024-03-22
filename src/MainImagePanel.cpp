@@ -57,7 +57,7 @@ void wxImagePanel::paintNow()
  */
 void wxImagePanel::loadNewFile(wxString file)
 {
-    processImage(std::string(file));
+    processImage2(std::string(file));
     changeDisplay(0, 0, image_width, image_height);
     Update();
     Refresh();
