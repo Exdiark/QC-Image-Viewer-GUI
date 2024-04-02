@@ -3,13 +3,14 @@
 #include "MyFrame.h"
 #include "MainImagePanel.h"
 #include "DisplaySelector.h"
+#include "Console.h"
 
 class MyApp : public wxApp
 {
 public:
 	Display_Selector* disp;
 	wxImagePanel* drawPane;
-	wxTextCtrl* console;
+	Console* console;
 	virtual bool OnInit();
 	wxFrame* frame;
 	void InitWindows(wxString fileName);

@@ -5,7 +5,8 @@
 #include <iostream>
 
 #include "../include/Header.h"
-using namespace std;
+using namespace std; 
+typedef basic_string<TCHAR>   tstring;
 
 wxBEGIN_EVENT_TABLE(MyApp, wxApp)
     EVT_BUTTON(1, OnButtonClicked)
@@ -17,15 +18,14 @@ wxEND_EVENT_TABLE()
 
 bool MyApp::OnInit()
 {
-
     wxInitAllImageHandlers();
-    InitWindows(wxT("../resources/Example.png"));
+    InitWindows(wxT("resources/Example.png"));
 	return true;
 }
 
 void MyApp::InitWindows(wxString fileName) {
 
-    frame = new wxFrame(NULL, wxID_ANY, wxT("hot dog"), wxPoint(50, 200), wxSize(1000, 800));
+    frame = new wxFrame(NULL, wxID_ANY, wxT("Image Debugger"), wxPoint(50, 200), wxSize(1000, 800));
     frame->SetBackgroundColour(wxColour(*wxWHITE));
 
     wxBoxSizer* main_sizer = new wxBoxSizer(wxHORIZONTAL); //main sizer for entire frame
@@ -42,24 +42,24 @@ void MyApp::InitWindows(wxString fileName) {
     rightpanel->SetSizer(right_sizer);
 
 
-
-    console = new wxTextCtrl(rightpanel, wxID_ANY, "", wxPoint(500, 70), wxSize(850 , 200),wxTE_READONLY | wxTE_MULTILINE);
-    drawPane = new wxImagePanel(rightpanel, "Image", 0, 0);
+    console = new Console(rightpanel, wxPoint(500, 70), wxSize(850, 200));
+    drawPane = new wxImagePanel(rightpanel, fileName, 0, 0);
     wxTextCtrl* consoleHeader = new wxTextCtrl(rightpanel, wxID_ANY, "Event Log", wxPoint(500, 70), wxSize(850, 25), wxTE_READONLY);
 
+    //adding console header and textbox to right sizer
     right_sizer->Add(drawPane, 1, wxEXPAND);
     right_sizer->Add(consoleHeader, 0, wxCENTER);
     right_sizer->Add(console,0,wxCENTER);
 
-
-
+    //adding left and right panels to main frame
     main_sizer->Add(leftpanel);
     main_sizer->AddSpacer(10);
     main_sizer->Add(rightpanel,1,wxEXPAND);
 
     
     wxButton* img_btn = new wxButton(leftpanel, 1, "Load Image", wxPoint(0, 0), wxSize(100, 25));
-    disp = new Display_Selector(left_sizer, leftpanel, NULL);
+    disp = new Display_Selector(left_sizer, leftpanel, console);
+
     wxButton* next_page = new wxButton(leftpanel, 3, "Next Page", wxPoint(0, 0), wxSize(100, 25));
     wxButton* last_page = new wxButton(leftpanel, 4, "Last Page", wxPoint(0, 0), wxSize(100, 25));
 
@@ -76,6 +76,10 @@ void MyApp::InitWindows(wxString fileName) {
     frame->SetSizer(main_sizer);
     frame->Show(true);
 
+    TCHAR NPath[MAX_PATH];
+    GetCurrentDirectory(MAX_PATH, NPath);
+    std::string strtmp(&NPath[0], &NPath[255]);
+    log("Current working directiory: " + strtmp);
 }
 
 void MyApp::OnButtonClicked(wxCommandEvent& evt) 

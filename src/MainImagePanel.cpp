@@ -122,6 +122,7 @@ void wxImagePanel::changeDisplay(int x, int y)
 
     unsigned char* subImage;
     if ((subImage = getSubImage(x, y, w, h)) == NULL) {
+        console->log(wxT("Member function changeDisplay failed"));
         return;
     }
 
@@ -157,6 +158,7 @@ void wxImagePanel::lastPage()
 unsigned char* wxImagePanel::getSubImage(int x, int y, int w, int h) 
 {
     if (x < 0 || y < 0 || w < 0 || h < 0) {
+        console->log(wxT("getSubImage fail due to negative input"));
         return NULL;
     } else if (x + w > image_width || y + h > image_height) {
         return NULL;
