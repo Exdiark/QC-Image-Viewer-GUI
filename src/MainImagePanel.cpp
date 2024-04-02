@@ -1,6 +1,7 @@
 #include <wx/colordlg.h>
 
 #include "../include/Header.h"
+using namespace std;
 
 BEGIN_EVENT_TABLE(wxImagePanel, wxPanel)
 
@@ -10,12 +11,15 @@ EVT_LEFT_DOWN(wxImagePanel::OnLeftDown)
 END_EVENT_TABLE()
 
 
-wxImagePanel::wxImagePanel(wxPanel* parent, wxString file, int width, int height) : wxPanel(parent, wxID_ANY, wxPoint(0, 0), wxSize(width, height))
+wxImagePanel::wxImagePanel(wxPanel* parent, wxString file, int width, int height, Console* con) : wxPanel(parent, wxID_ANY, wxPoint(0, 0), wxSize(width, height))
 {
+    
     object_width = width;
     object_height = height;
     isMouseDown = false;
     loadNewFile(file);
+    console = con;
+    console->log("Main Image Panel Initialized Successfully");
 }
 
 /*
@@ -96,6 +100,10 @@ wxSize wxImagePanel::getImageSize()
  */
 void wxImagePanel::changeDisplay(int x, int y, int w, int h) 
 {
+    string logmsg = "Displaying subimage with parameters x:" + to_string(x) + ", y:" +
+        to_string(y) + ", width:" + to_string(w) + ", height:" + to_string(h);
+    console->log(logmsg);
+
     unsigned char* subImage;
     if ((subImage = getSubImage(x, y, w, h)) == NULL) {
         return;
@@ -117,6 +125,7 @@ void wxImagePanel::changeDisplay(int x, int y, int w, int h)
  */
 void wxImagePanel::changeDisplay(int x, int y)
 {
+
     int w=display_width;
     int h=display_height;
 
@@ -161,6 +170,7 @@ unsigned char* wxImagePanel::getSubImage(int x, int y, int w, int h)
         console->log(wxT("getSubImage fail due to negative input"));
         return NULL;
     } else if (x + w > image_width || y + h > image_height) {
+        console->log(wxT("getSubImage fail due to out of bounds input params"));
         return NULL;
     }
 
@@ -192,6 +202,9 @@ unsigned char* wxImagePanel::getSubImage(int x, int y, int w, int h)
  */
 void wxImagePanel::processImage(std::string fileName)
 {
+    string logmsg = "Call made to ImagePanel::processImage with filename: " + fileName;
+    console->log(logmsg);
+
     std::vector<unsigned char> decoded_image;
 
     unsigned width, height;
@@ -245,6 +258,11 @@ void wxImagePanel::highlightPixel(int x, int y)
 
 void wxImagePanel::highlightRectangle(int x, int y, int w, int h) 
 {
+    std::string format = "Attempting to highlight rectange with params: x=" + std::to_string(x)
+        + ", y=" + std::to_string(x) + ", w=" + std::to_string(x) + ", h=" + std::to_string(x);
+    console->log(format);
+
+
     for (int i = 0; i < w; i++)
     {
         for (int j = 0; j < h; j++)

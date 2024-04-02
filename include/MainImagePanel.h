@@ -15,7 +15,7 @@ class wxImagePanel : public wxPanel
     DECLARE_EVENT_TABLE()
 
 public:
-    wxImagePanel(wxPanel* parent, wxString file, int width, int height);
+    wxImagePanel(wxPanel* parent, wxString file, int width, int height, Console* console);
     void loadNewFile(wxString file);
     void render(wxDC& dc);
     wxSize getImageSize();

@@ -43,7 +43,7 @@ void MyApp::InitWindows(wxString fileName) {
 
 
     console = new Console(rightpanel, wxPoint(500, 70), wxSize(850, 200));
-    drawPane = new wxImagePanel(rightpanel, fileName, 0, 0);
+    drawPane = new wxImagePanel(rightpanel, fileName, 0, 0, console);
     wxTextCtrl* consoleHeader = new wxTextCtrl(rightpanel, wxID_ANY, "Event Log", wxPoint(500, 70), wxSize(850, 25), wxTE_READONLY);
 
     //adding console header and textbox to right sizer
@@ -120,9 +120,7 @@ void MyApp::OnButtonClicked(wxCommandEvent& evt)
         int y = disp->getY();
         int w = disp->getW();
         int h = disp->getH();
-        
-        log("Displaying subimage with parameters X:" + to_string(disp->getX()) + " Y: " + to_string(disp->getY()) + " Width: " + to_string(disp->getW()) + " Height: " + to_string(disp->getH()));
-
+      
         drawPane->changeDisplay(x, y, w, h);
         
     }

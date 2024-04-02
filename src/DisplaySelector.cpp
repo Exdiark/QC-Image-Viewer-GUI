@@ -1,7 +1,7 @@
 #include "../include/Header.h"
 using namespace std;
 
-Display_Selector::Display_Selector(wxSizer* sizer, wxWindow* parent, Console* console)
+Display_Selector::Display_Selector(wxSizer* sizer, wxWindow* parent, Console* con)
 {
     x = new wxTextCtrl(parent, wxID_ANY, "", wxPoint(0, 0), wxSize(100, 25));
     y = new wxTextCtrl(parent, wxID_ANY, "", wxPoint(0, 0), wxSize(100, 25));
@@ -9,8 +9,10 @@ Display_Selector::Display_Selector(wxSizer* sizer, wxWindow* parent, Console* co
     h = new wxTextCtrl(parent, wxID_ANY, "", wxPoint(0, 0), wxSize(100, 25));
 
     button = new wxButton(parent, 2, "Load SubImage", wxPoint(0, 0), wxSize(100, 25));
-    this->console=console;
+    this->console=con;
     parentSizer=sizer;
+
+    console->log("Display Selector Initialized Successfully");
 }
 
 int Display_Selector::getX()
@@ -35,7 +37,6 @@ int Display_Selector::getH()
 
 void Display_Selector::addSizer() 
 {
-    console->log(wxT("Call made to Display_Selector addSizer()"));
     parentSizer->Add(x);
     parentSizer->Add(y);
     parentSizer->Add(w);

@@ -7,7 +7,7 @@ Console::Console(wxWindow* parent, wxPoint position, wxSize size) : wxTextCtrl(p
 	wxTextCtrl* win = new wxTextCtrl(parent, wxID_ANY, "", position, size, wxTE_READONLY | wxTE_MULTILINE);
 	window-win;
 	*/
-	log("Console Initialized");
+	log("Console Initialized Successfully");
 }
 
 void Console::log(wxString msg)
@@ -20,4 +20,10 @@ void Console::logWB(wxString msg)
 {
 	ostream stream(this);
 	stream << msg << "\r\n";
+}
+
+void Console::logNB(wxString msg)
+{
+	ostream stream(this);
+	stream << msg;
 }
